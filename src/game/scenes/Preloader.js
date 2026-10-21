@@ -9,19 +9,14 @@ export class Preloader extends Scene
 
     init ()
     {
-        //  We loaded this image in our Boot Scene, so we can display it here
         this.add.image(512, 384, 'background');
 
-        //  A simple progress bar. This is the outline of the bar.
         this.add.rectangle(512, 384, 468, 32).setStrokeStyle(1, 0xffffff);
 
-        //  This is the progress bar itself. It will increase in size from the left based on the % of progress.
-        const bar = this.add.rectangle(512-230, 384, 4, 28, 0xffffff);
+        const bar = this.add.rectangle(512 - 230, 384, 4, 28, 0xffffff);
 
-        //  Use the 'progress' event emitted by the LoaderPlugin to update the loading bar
         this.load.on('progress', (progress) => {
 
-            //  Update the progress bar (our bar is 464px wide, so 100% = 464px)
             bar.width = 4 + (460 * progress);
 
         });
@@ -29,7 +24,6 @@ export class Preloader extends Scene
 
     preload ()
     {
-        //  Load the assets for the game - Replace with your own assets
         this.load.setPath('assets');
 
         this.load.image('logo', 'logo.png');
@@ -37,10 +31,62 @@ export class Preloader extends Scene
 
     create ()
     {
-        //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
-        //  For example, you can define global animations here, so we can use them in other scenes.
+        this.createCarritoTexture();
+        this.createTreeTexture();
 
-        //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
         this.scene.start('MainMenu');
+    }
+
+    createCarritoTexture ()
+    {
+        if (this.textures.exists('carrito'))
+        {
+            return;
+        }
+
+        const graphic = this.make.graphics({ add: false });
+
+        graphic.fillStyle(0x111111, 0.28);
+        graphic.fillRoundedRect(12, 12, 40, 78, 12);
+
+        graphic.fillStyle(0xc1121f, 1);
+        graphic.fillRoundedRect(8, 4, 48, 84, 14);
+
+        graphic.fillStyle(0x8ecae6, 1);
+        graphic.fillRoundedRect(16, 18, 32, 22, 6);
+
+        graphic.fillStyle(0xf8f9fa, 1);
+        graphic.fillCircle(20, 12, 4);
+        graphic.fillCircle(44, 12, 4);
+
+        graphic.fillStyle(0x212529, 1);
+        graphic.fillRoundedRect(0, 16, 10, 20, 3);
+        graphic.fillRoundedRect(54, 16, 10, 20, 3);
+        graphic.fillRoundedRect(0, 58, 10, 20, 3);
+        graphic.fillRoundedRect(54, 58, 10, 20, 3);
+
+        graphic.generateTexture('carrito', 64, 96);
+        graphic.destroy();
+    }
+
+    createTreeTexture ()
+    {
+        if (this.textures.exists('arbol'))
+        {
+            return;
+        }
+
+        const graphic = this.make.graphics({ add: false });
+
+        graphic.fillStyle(0x6f4e37, 1);
+        graphic.fillRect(20, 30, 8, 16);
+        graphic.fillStyle(0x2d6a4f, 1);
+        graphic.fillCircle(24, 18, 16);
+        graphic.fillStyle(0x40916c, 1);
+        graphic.fillCircle(16, 22, 10);
+        graphic.fillCircle(32, 22, 10);
+
+        graphic.generateTexture('arbol', 48, 48);
+        graphic.destroy();
     }
 }
